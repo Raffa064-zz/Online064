@@ -16,8 +16,8 @@ server.listen(PORT, () => console.log('Server started on port: ' + PORT))
 
 const gameState = {
     players: [],
-    width: 64,
-    height: 64
+    width: 32,
+    height: 32
 }
 
 io.on('connection', socket => {

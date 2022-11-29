@@ -7,14 +7,17 @@ socket.on('update', (state) => {
 
 //Controles
 document.addEventListener('keydown', event => {
-    var key = null
-    if (event.key == 'ArrowUp') key = 'up'
-    if (event.key == 'ArrowDown') key = 'down'
-    if (event.key == 'ArrowLeft') key = 'left'
-    if (event.key == 'ArrowRight') key = 'right'
-    console.log(event.key)
-    socket.emit('move', key)
+    var direction = null
+    if (event.key == 'ArrowUp') direction = 'up'
+    if (event.key == 'ArrowDown') direction = 'down'
+    if (event.key == 'ArrowLeft') direction = 'left'
+    if (event.key == 'ArrowRight') direction = 'right'
+    move(direction)
 })
+
+function move(direction) {
+    socket.emit('move', direction)
+}
 
 //Setup do frontend
 const canvas = document.querySelector('canvas')

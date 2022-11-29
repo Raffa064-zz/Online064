@@ -6,17 +6,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Multiplayer</title>
     <style>
-        canvas {
-            border: 1px solid black;
+        :root {
+            --size: min(1vw, 1vh)    
         }
+        
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            padding: 10px;
+            background: #222;
+            color: #aaa;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        canvas {
+            width: calc(var(--size) * 90);
+            height: calc(var(--size) * 90);
+            display: block;
+            margin: auto;
+            background: #555;
+            border: 1px solid #aaa;
+        }
+        
+        button {
+            width: calc(var(--size) * 15);
+            height: calc(var(--size) * 15);
+            margin: 10px;
+            background: transparent;
+            color: #aaa;
+            border: 1px solid #aaa;
+            border-radius: 50%;
+            transition: 0.05s;
+        }
+        
+        button:active {
+            background: #aaa4;
+            animation: shake 0.1s infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0px);
+            }
+            
+            50% {
+                transform: translateX(5px);
+            }
+        }
+        
+        .mobile-controls {
+            display: none;
+        }
+        
+        @media (max-width: 480px) {
+            .mobile-controls {
+                display: flex;
+                padding: 10px;
+                margin-top: var(--size);
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+        
     </style>
     <script src="socket.io/socket.io.js"></script>
 </head>
 
 <body>
-    <p></p>
+    <h1>Online064</h1>
     <canvas width="200" height="200">
     </canvas>
+    <div class="mobile-controls">
+        <span>
+            <button onclick="move('up')" type="submit">&uarr;</button><br>
+            <button onclick="move('down')" type="submit">&darr;</button>
+        </span>
+        <span>
+            <button onclick="move('left')" type="submit">&larr;</button>
+            <button onclick="move('right')" type="submit">&rarr;</button>
+        </span>
+    </div>
     <script src="./index.js"></script>
 </body>
 
