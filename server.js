@@ -11,7 +11,7 @@ const io = socketIo().listen(server) //Inicia o socket.io como ouvinte do servid
 app.use(express.static(page())) //Seleciona a pasta pages como provedor de paginas estaticas
 
 //Selecionar e iniciar servidor
-const PORT = process.env.PORT | 5000
+const PORT = process.env.PORT || 5000
 server.listen(PORT, () => console.log('Server started on port: ' + PORT))
 
 const gameState = {
