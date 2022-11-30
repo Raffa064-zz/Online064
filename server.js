@@ -34,6 +34,7 @@ io.on('connection', socket => {
     gameState.players.push(player)
     
     socket.on('change-nick', nick => {
+        console.log('Player renamed from '+player.nick+' to '+nick)
         player.nick = nick
         update()
     })
