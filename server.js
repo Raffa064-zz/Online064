@@ -2,6 +2,7 @@
 const express = require('express') //Carrega o express
 const http = require('http') //Carrega o http (biblioteca padrão)
 const socketIo = require('socket.io') //Carrega socket.io
+const fs = require('fs')
 
 //Setup
 const app = express() //Cria a aplicaçãp
@@ -23,6 +24,8 @@ const gameState = {
     fruits: [],
     bestPlayer: null
 }
+
+loadBestPlayer()
 
 setInterval(() => {spawnFruit(); update()}, process.env.SPAWN_DELAY || 1000) //spawnar uma fruta a cada tantos segundos
 
@@ -77,6 +80,7 @@ io.on('connection', socket => {
                         score: player.score,
                         color: player.color
                     }
+                    saveBestPlayer()
 
                     console.log(player.nick + ' is the best player')
                 }
@@ -152,4 +156,21 @@ function page(pageName) {
 
 function generateColor() {
     return 'hsl(' + parseInt(Math.random() * 360) + ', 82%, 34%, 1)'
+}
+
+function loadBestPlayer() {
+    fs.readFile(__dirname+'/bp.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+        gameState.bestPlayer = JSON.parse(data)
+    })
+}
+
+function saveBestPlayer() {
+    if (gameState.bestPlayer == null) {
+        return
+    }
+    fs.writeFile(__dirname+'/bp.json', JSON.stringify(gameState.bestPlayer), {flag: 'a+'}, err => console.error(err))
 }
