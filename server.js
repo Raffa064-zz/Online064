@@ -66,7 +66,7 @@ io.on('connection', socket => {
                 player.score += 1
                 gameState.fruits.splice(gameState.fruits.indexOf(fruit), 1)
                 if (gameState.fruits.length == 0) {
-                    spawnFruit() // Ja epawna se não tiver nenhuma no campo senão fica ruin para o jogador esperar o spwn de outra fruta
+                    spawnFruit() // Ja spawna se não tiver nenhuma no campo senão fica ruin para o jogador esperar o spwn de outra fruta
                 }
                 
                 console.log(player.nick + ' has collected a fruit')
@@ -128,7 +128,7 @@ function update() {
 //Função que spawn frutas... o numero maximo de frutas spawnadas simultaneamente é de 10 frutas
 function spawnFruit() {
     //Spawna ate 'MAX_FRUITS' frutas, nunca pode ter mais fruta do q player, e o minimo de frutas seria 'MIN_FRUITS'.
-    if (gameState.fruits.length < process.env.MAX_FRUITS && gameState.fruits.length < Math.min(process.env.MIN_FRUITS, gameState.players.length)) {
+    if (gameState.fruits.length < process.env.MAX_FRUITS && gameState.fruits.length < Math.max(process.env.MIN_FRUITS, gameState.players.length)) {
         const fruit = {
             x: Math.floor(Math.random() * gameState.width),
             y: Math.floor(Math.random() * gameState.height)
