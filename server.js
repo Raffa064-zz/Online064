@@ -24,7 +24,7 @@ const gameState = {
     bestPlayer: null
 }
 
-setInterval(spawnFruit, 4000) //spawnar uma fruta a cada 4 segundos
+setInterval(spawnFruit, process.env.SPAWN_DELAY || 1000) //spawnar uma fruta a cada tantos segundos
 
 io.on('connection', socket => {
     console.log('Player connected!')
@@ -123,8 +123,8 @@ function update() {
 
 //Função que spawn frutas... o numero maximo de frutas spawnadas simultaneamente é de 10 frutas
 function spawnFruit() {
-    //Spawna ate 10 frutas, nunca pode ter mais fruta do q player, e o minimo de frutas seria 3.
-    if (gameState.fruits.length < 10 && gameState.fruits.length < Math.min(3, gameState.players.length)) {
+    //Spawna ate 'MAX_FRUITS' frutas, nunca pode ter mais fruta do q player, e o minimo de frutas seria 'MIN_FRUITS'.
+    if (gameState.fruits.length < process.env.MAX_FRUITS && gameState.fruits.length < Math.min(process.env.MIN_FRUITS, gameState.players.length)) {
         const fruit = {
             x: Math.floor(Math.random() * gameState.width),
             y: Math.floor(Math.random() * gameState.height)
