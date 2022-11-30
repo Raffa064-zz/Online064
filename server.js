@@ -65,6 +65,10 @@ io.on('connection', socket => {
             if (player.x == fruit.x && player.y == fruit.y) {
                 player.score += 1
                 gameState.fruits.splice(gameState.fruits.indexOf(fruit), 1)
+                if (gameState.fruits.length == 0) {
+                    spawnFruit() // Ja epawna se não tiver nenhuma no campo senão fica ruin para o jogador esperar o spwn de outra fruta
+                }
+                
                 console.log(player.nick + ' has collected a fruit')
 
                 if (gameState.bestPlayer === null || player.score > gameState.bestPlayer.score) {
