@@ -43,6 +43,10 @@ canvas {
     border: 1px solid #aaa;
 }
 
+.information {
+    padding: 10px;
+}
+
 button {
     width: calc(var(--size) * 15);
     height: calc(var(--size) * 15);
