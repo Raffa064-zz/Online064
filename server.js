@@ -25,14 +25,16 @@ io.on('connection', socket => {
     
     const player = {
         id: socket.id,
+        nick: 'Undefined064',
+        color: generateColor(),
+        score: 0,
         x: Math.floor(Math.random() * gameState.width),
         y: Math.floor(Math.random() * gameState.height)
     }
     gameState.players.push(player)
     
-    socket.on('disconnect', () => {
-        console.log('Player disconnected')
-        gameState.players = gameState.players.filter(player => player.id !== socket.id)
+    socket.on('change-nick', nick => {
+        player.nick = nick
         update()
     })
     
@@ -51,7 +53,14 @@ io.on('connection', socket => {
         
         player.x = Math.max(0, Math.min(gameState.width-1, player.x))
         player.y = Math.max(0, Math.min(gameState.height-1, player.y))
+        player.score += 1
         
+        update()
+    })
+    
+    socket.on('disconnect', () => {
+        console.log('Player disconnected')
+        gameState.players = gameState.players.filter(player => player.id !== socket.id)
         update()
     })
     
@@ -71,4 +80,8 @@ function page(pageName) {
         path += pageName
     }
     return path
+}
+
+function generateColor() { 
+    return 'hsl('+parseInt(Math.random() * 360)+', 82%, 34%, 1)'
 }

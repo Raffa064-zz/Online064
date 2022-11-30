@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/game.css">
+    <title>Multiplayer</title>
+    <script>
+        window.onerror = (message) => {
+            document.body.innerHTML = "Error: "+message
+        }
+    </script>
+    <script src="socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <h1>Online064</h1>
+    <div id="player-data">
+        <span id="nick">Nick: User</span> <span id="score">Score: 0</span>
+    </div>
+    <canvas width="200" height="200">
+    </canvas>
+    <p>You are the filled square!<br>The game aren't completed, so you gain score when walk... for now.</p>
+    <div class="mobile-controls">
+        <span>
+            <button onclick="move('up')" type="submit">&uarr;</button><br>
+            <button onclick="move('down')" type="submit">&darr;</button>
+        </span>
+        <span>
+            <button onclick="move('left')" type="submit">&larr;</button>
+            <button onclick="move('right')" type="submit">&rarr;</button>
+        </span>
+    </div>
+    <script src="./game.js"></script>
+</body>
+
+</html>

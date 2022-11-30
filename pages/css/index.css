@@ -1,0 +1,52 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+body {
+    padding: 10px;
+    background: #222;
+    color: #aaa;
+}
+
+input {
+    padding: 10px;
+    margin-block: 10px;
+    background: transparent;
+    color: #aaa;
+    border: 1px solid #777;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+input:focus {
+    border: 1px solid #aaa;
+    outline: none;
+}
+
+button {
+    padding: 10px;
+    background: transparent;
+    color: #aaa;
+    border: 1px solid #777;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+button:active {
+    background: #aaa4;
+}
+
+strong {
+    color: #bbb;
+}
+
+.hightlighted-box {
+    padding: 10px;
+    margin-block: 10px;
+    border: 1px solid #aaa;
+}
