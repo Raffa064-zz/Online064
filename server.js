@@ -24,7 +24,7 @@ const gameState = {
     bestPlayer: null
 }
 
-setInterval(spawnFruit, process.env.SPAWN_DELAY || 1000) //spawnar uma fruta a cada tantos segundos
+setInterval(() => {spawnFruit(); update()}, process.env.SPAWN_DELAY || 1000) //spawnar uma fruta a cada tantos segundos
 
 io.on('connection', socket => {
     console.log('Player connected!')

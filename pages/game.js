@@ -36,7 +36,6 @@ socket.on('update', (state) => {
 const nickStr = getUrlParam('nick')
 socket.emit('change-nick', nickStr)
 
-
 setInterval(render, 1000 / 64)
 
 function render() {
