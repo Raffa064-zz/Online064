@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="./css/game.css">
     <title>Multiplayer</title>
     <script>
-        // window.onerror = (message) => {
-        //     document.body.innerHTML = "Error: "+message
-        // }
+        window.onerror = (message) => {
+            document.body.innerHTML = "Error: "+message
+        }
     </script>
     <script src="socket.io/socket.io.js"></script>
 </head>
@@ -33,7 +33,7 @@
             <button onclick="move('right')" type="submit">&rarr;</button>
         </span>
     </div>
-    <script src="./game.js"></script>
+    <script src="./js/game.js"></script>
 </body>
 
 </html>

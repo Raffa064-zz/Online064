@@ -50,3 +50,9 @@ strong {
     margin-block: 10px;
     border: 1px solid #aaa;
 }
+
+a {
+    color: #08f;
+    font-weight: bolder;
+    text-decoration: none;
+}
