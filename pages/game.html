@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="./css/game.css">
     <title>Multiplayer</title>
     <script>
-        window.onerror = (message) => {
-            document.body.innerHTML = "Error: "+message
-        }
+        // window.onerror = (message) => {
+        //     document.body.innerHTML = "Error: "+message
+        // }
     </script>
     <script src="socket.io/socket.io.js"></script>
 </head>
@@ -17,11 +17,12 @@
 <body>
     <h1>Online064</h1>
     <div id="player-data">
-        <span id="nick">Nick: User</span> <span id="score">Score: 0</span>
+        <span id="nick">Nick: ...</span> <span id="score">Score: ...</span>
     </div>
+    <span id="bp-data">The best player is: <span id="bp-nick" class="hightlight text-shadow">...</span>, with <span id="bp-score" class="hightlight">...</span> points</span>
     <canvas width="200" height="200">
     </canvas>
-    <p class="information">You are the filled square!<br>The game aren't completed, so you gain score when walk... for now.</p>
+    <p class="information">You are the filled square!<br>Your mission is to collect the fruits (the blinking squares).</p>
     <div class="mobile-controls">
         <span>
             <button onclick="move('up')" type="submit">&uarr;</button><br>

@@ -10,6 +10,8 @@ const io = socketIo().listen(server) //Inicia o socket.io como ouvinte do servid
 
 app.use(express.static(page())) //Seleciona a pasta pages como provedor de paginas estaticas
 
+injectDebugLogs()
+
 //Selecionar e iniciar servidor
 const PORT = process.env.PORT || 5000
 server.listen(PORT, () => console.log('Server started on port: ' + PORT))
@@ -17,12 +19,16 @@ server.listen(PORT, () => console.log('Server started on port: ' + PORT))
 const gameState = {
     players: [],
     width: 32,
-    height: 32
+    height: 32,
+    fruits: [],
+    bestPlayer: null
 }
+
+setInterval(spawnFruit, 4000) //spawnar uma fruta a cada 4 segundos
 
 io.on('connection', socket => {
     console.log('Player connected!')
-    
+
     const player = {
         id: socket.id,
         nick: 'Undefined064',
@@ -32,13 +38,13 @@ io.on('connection', socket => {
         y: Math.floor(Math.random() * gameState.height)
     }
     gameState.players.push(player)
-    
+
     socket.on('change-nick', nick => {
-        console.log('Player renamed from '+player.nick+' to '+nick)
-        player.nick = nick
+        console.log('Player renamed from ' + player.nick + ' to ' + nick)
+        player.nick = validNick(nick)
         update()
     })
-    
+
     socket.on('move', (direction) => {
         const movements = {
             up: () => (player.y--),
@@ -46,30 +52,87 @@ io.on('connection', socket => {
             left: () => (player.x--),
             right: () => (player.x++)
         }
-        
+
         const playerMovement = movements[direction]
         if (playerMovement) {
             playerMovement()
         }
-        
-        player.x = Math.max(0, Math.min(gameState.width-1, player.x))
-        player.y = Math.max(0, Math.min(gameState.height-1, player.y))
-        player.score += 1
-        
+
+        player.x = Math.max(0, Math.min(gameState.width - 1, player.x))
+        player.y = Math.max(0, Math.min(gameState.height - 1, player.y))
+
+        gameState.fruits.forEach(fruit => {
+            if (player.x == fruit.x && player.y == fruit.y) {
+                player.score += 1
+                gameState.fruits.splice(gameState.fruits.indexOf(fruit), 1)
+                console.log(player.nick + ' has collected a fruit')
+
+                if (gameState.bestPlayer === null || player.score > gameState.bestPlayer.score) {
+                    gameState.bestPlayer = {
+                        nick: player.nick,
+                        score: player.score,
+                        color: player.color
+                    }
+
+                    console.log(player.nick + ' is the best player')
+                }
+            }
+        })
+
         update()
     })
-    
+
     socket.on('disconnect', () => {
         console.log('Player disconnected')
         gameState.players = gameState.players.filter(player => player.id !== socket.id)
         update()
     })
-    
+
     update()
 })
 
+function injectDebugLogs() {
+    const DEBUG = process.env.DEBUG
+    const defaultLog = console.log
+    console.log = (msg) => {
+        if (DEBUG) {
+            defaultLog('debug: ' + msg)
+        }
+    }
+}
+
+function validNick(nick) {
+    const validNickRegex = /^[a-zA-Z0-9_]{4,20}$/
+    if (nick.match(validNickRegex)) {
+        return nick
+    }
+
+    availableChars = 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz0123456789'.split('')
+
+    nick = ''
+    for (let i = 0; i < 10; i++) {
+        nick += availableChars[parseInt(Math.random() * availableChars.length)]
+    }
+
+    return nick;
+}
+
 function update() {
     io.emit('update', gameState)
+}
+
+//Função que spawn frutas... o numero maximo de frutas spawnadas simultaneamente é de 10 frutas
+function spawnFruit() {
+    //Spawna ate 10 frutas, nunca pode ter mais fruta do q player, e o minimo de frutas seria 3.
+    if (gameState.fruits.length < 10 && gameState.fruits.length < Math.min(3, gameState.player.length)) {
+        const fruit = {
+            x: Math.floor(Math.random() * gameState.width),
+            y: Math.floor(Math.random() * gameState.height)
+        }
+        gameState.fruits.push(fruit)
+
+        console.log('Spawned a fruit!')
+    }
 }
 
 function page(pageName) {
@@ -83,6 +146,6 @@ function page(pageName) {
     return path
 }
 
-function generateColor() { 
-    return 'hsl('+parseInt(Math.random() * 360)+', 82%, 34%, 1)'
+function generateColor() {
+    return 'hsl(' + parseInt(Math.random() * 360) + ', 82%, 34%, 1)'
 }
