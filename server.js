@@ -124,7 +124,7 @@ function update() {
 //Função que spawn frutas... o numero maximo de frutas spawnadas simultaneamente é de 10 frutas
 function spawnFruit() {
     //Spawna ate 10 frutas, nunca pode ter mais fruta do q player, e o minimo de frutas seria 3.
-    if (gameState.fruits.length < 10 && gameState.fruits.length < Math.min(3, gameState.player.length)) {
+    if (gameState.fruits.length < 10 && gameState.fruits.length < Math.min(3, gameState.players.length)) {
         const fruit = {
             x: Math.floor(Math.random() * gameState.width),
             y: Math.floor(Math.random() * gameState.height)
