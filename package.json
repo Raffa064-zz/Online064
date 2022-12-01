@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "node ."
+    "test": "export PORT=8080 && export MIN_FRUITS=5 && export MAX_FRUITS=20 && export SPAWN_DELAY=1000 && node ."
   },
   "keywords": [],
   "author": "",
