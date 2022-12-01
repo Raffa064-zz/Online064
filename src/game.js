@@ -31,7 +31,7 @@ function createGameState(width, height) {
             this.players = this.players.filter(other => other.id !== player.id)
         },
         checkFruitsCollision: function(player, onCollect) {
-            //Detectar e processar frutas coletadas
+            //Detect and process fruit collection
             this.fruits.forEach(fruit => {
                 if (player.x == fruit.x && player.y == fruit.y) {
                     player.score += 1
@@ -54,7 +54,7 @@ function createGameState(width, height) {
             this.fruits = this.fruits.filter(f => f !== fruit)
         },
         publicState: function() {
-            //Retorna versão publica do gameState (sem as funcões)
+            //Returns a public version of the gameState (without functions)
             return {
                 width: this.width,
                 height: this.height,

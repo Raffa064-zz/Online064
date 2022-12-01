@@ -1,21 +1,20 @@
-//Carregar bibliotecas/modulos
-const express = require('express') //Carrega o express
-const http = require('http') //Carrega o http (biblioteca padrão)
-const socketIo = require('socket.io') //Carrega socket.io
-const game = require('./game') //Carrega o modulo game.js
+//Load modules
+const express = require('express')
+const http = require('http') 
+const socketIo = require('socket.io')
+const game = require('./game')
 
-//Setup
-const app = express() //Cria a aplicaçãp
-const server = http.createServer(app) //Cria um servidor
-const io = socketIo().listen(server) //Inicia o socket.io como ouvinte do servidor
+//Setup server
+const app = express() //Create the app
+const server = http.createServer(app) //Create the server
+const io = socketIo().listen(server) //Initialize the socket.io as the server listener
+app.use(express.static(page())) //Select "pages" folder as static content provider
 
-app.use(express.static(page())) //Seleciona a pasta pages como provedor de paginas estaticas
-
-//Selecionar e iniciar servidor
+//Start server on select port
 const PORT = process.env.PORT || 5000
 server.listen(PORT, () => console.log('Server started on port: ' + PORT))
 
-//Constantes e variaveis de ambiente
+//Constants and envirounment variables
 const SPAWN_DELAY = process.env.SPAWN_DELAY || 1000
 const MIN_FRUITS = process.env.MIN_FRUITS || 10
 const MAX_FRUITS = process.env.MAX_FRUITS || 20
@@ -34,31 +33,31 @@ io.on('connection', socket => {
     const nick = validNick(socket.handshake.query.nick)
     const player = gameState.spawnPlayer(socket.id, nick)
 
-    //Evento de quando o player se move 
+    //Player move event
     socket.on('move', (direction) => {
         const movement = playerMovements[direction]
         if (movement) {
             movement(player)
         }
 
-        //Colisão nas paredes
+        //Wall collision
         player.x = Math.max(0, Math.min(gameState.width - 1, player.x))
         player.y = Math.max(0, Math.min(gameState.height - 1, player.y))
 
-        //Detectar e processar colisões do player com as frutas
+        //Detect and process player and fruit collisions
         gameState.checkFruitsCollision(player, () => {
-            //60% de chance de spawnar uma fruta imediatamente
+            //60% on chance to imediate spawn a fruit
             spawnFruitRandomPercentage(0.6)
         })
         
-        //Atualizar melhor jogador (caso necesario)
+        //Update best player (if necessary)
         gameState.updateBestPlayer(player)
 
-        //Mandar alterações para todos os jogadores 
+        //Send updates for all players
         update()
     })
 
-    //Evento de quando player disconecta
+    //Player disconnect event 
     socket.on('disconnect', () => {
         console.log('Player disconnected')
         gameState.removePlayer(player)
@@ -70,15 +69,15 @@ io.on('connection', socket => {
 
 setInterval(spawnFruitAndUpdate, SPAWN_DELAY) //spawnar uma fruta a cada tantos segundos
 
-//Função responsavel por filtrar os nick dos usuarios. Caso o nick sej nulo ou invalido, retorna uma string aleatoria 
+//Function responsible for filtering users' nicks. If the nick is null or invalid, it returns a random string
 function validNick(nick) {
-    //Verificar regras do nick, 4 a 20 caracteres, e com apenas letras, numeros e underline.
+    //Verify the nick rules: 4 to 20 characters, and with only letters, numbers and underline.
     const validNickRegex = /^[a-zA-Z0-9_]{4,20}$/
     if (nick.match(validNickRegex)) {
         return nick
     }
 
-    //Gerar nick aleatorio
+    //Generate random nick 
     availableChars = 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz0123456789'.split('')
     nick = ''
     for (let i = 0; i < 10; i++) {
@@ -88,15 +87,14 @@ function validNick(nick) {
     return nick;
 }
 
-//Envia o gameState atual para todos os usuarios
+//Sent the current gameState for all player
 function update() {
     io.emit('update', gameState.publicState())
 }
 
-//Função que spawn frutas... o numero maximo de frutas spawnadas simultaneamente é de 10 frutas
+//Fruit spawn function
 function spawnFruit() {
-    //Spawna ate 'MAX_FRUITS' frutas, nunca pode ter mais fruta do que player, e o minimo de frutas seria 'MIN_FRUITS'.
-    if (gameState.fruits.length < MAX_FRUITS && gameState.fruits.length < Math.max(MIN_FRUITS, gameState.players.length)) {
+  if (gameState.fruits.length < MAX_FRUITS && gameState.fruits.length < Math.max(MIN_FRUITS, gameState.players.length)) {
         gameState.spawnFruit()
         console.log('Spawned a fruit!')
     }
@@ -114,8 +112,8 @@ function spawnFruitRandomPercentage(percent) {
 }
 
 function page(pageName) {
-    //Esta função retorna o path de uma pagina da pasta pages. 
-    //Quando o prametro pageName é nulo, ela retorna apenas o path da pasta pages
+    //This function returns the path of a page from the "pages" folder. 
+    //When the "pageName" parameter is null, it returns "pages" folder path only
 
     const parentDirName = __dirname.substring(0, __dirname.length - '/src'.length) //Remove "/src" 
     var path = parentDirName + '/pages/'
