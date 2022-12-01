@@ -22,7 +22,11 @@ const ctx = canvas.getContext('2d')
 var fruitBlinkState = 0
 
 //Conexão com servidor
-const socket = io.connect()
+const socket = io.connect({
+    query: {
+        nick: getUrlParam('nick')
+    }
+})
 var gameState = {}
 socket.on('update', (state) => {
     gameState = state
@@ -33,10 +37,8 @@ socket.on('update', (state) => {
         bestPlayerScore.innerText = gameState.bestPlayer.score
     }
 })
-const nickStr = getUrlParam('nick')
-socket.emit('change-nick', nickStr)
 
-setInterval(render, 1000 / 64)
+setInterval(render, 1000/120)
 
 function render() {
     const cellWidth = width / gameState.width
