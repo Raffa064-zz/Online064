@@ -1,5 +1,4 @@
 function createGameState(width, height) {
-    console.log('Creating game state')
     const gameState = {
         width: width,
         height: height,
@@ -8,6 +7,8 @@ function createGameState(width, height) {
         bestPlayer: null,
         updateBestPlayer: function(player) {
             if (this.bestPlayer === null || player.score > this.bestPlayer.score) {
+                console.log('Updated best player: ' + player.nick)
+                
                 this.bestPlayer = {
                     nick: player.nick,
                     score: player.score,
@@ -24,6 +25,7 @@ function createGameState(width, height) {
                 x: Math.floor(Math.random() * this.width),
                 y: Math.floor(Math.random() * this.height)
             }
+            
             this.players.push(player)
             return player
         },
@@ -36,10 +38,7 @@ function createGameState(width, height) {
                 if (player.x == fruit.x && player.y == fruit.y) {
                     player.score += 1
                     this.removeFruit(fruit)
-
                     onCollect()
-
-                    console.log(player.nick + ' has collected a fruit')
                 }
             })
         },
@@ -49,6 +48,8 @@ function createGameState(width, height) {
                 y: Math.floor(Math.random() * this.height)
             }
             this.fruits.push(fruit)
+
+            return fruit
         },
         removeFruit: function(fruit) {
             this.fruits = this.fruits.filter(f => f !== fruit)

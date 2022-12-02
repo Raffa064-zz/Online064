@@ -28,10 +28,9 @@ const playerMovements = {
 const gameState = game.createGameState(32, 32)
 
 io.on('connection', socket => {
-    console.log('Player connected!')
-
     const nick = validNick(socket.handshake.query.nick)
     const player = gameState.spawnPlayer(socket.id, nick)
+    console.log('Player connected: '+player.nick)
 
     //Player move event
     socket.on('move', (direction) => {
@@ -59,7 +58,7 @@ io.on('connection', socket => {
 
     //Player disconnect event 
     socket.on('disconnect', () => {
-        console.log('Player disconnected')
+        console.log('Player disconnected: '+player.nick)
         gameState.removePlayer(player)
         update()
     })
@@ -68,6 +67,18 @@ io.on('connection', socket => {
 })
 
 setInterval(spawnFruitAndUpdate, SPAWN_DELAY) //spawnar uma fruta a cada tantos segundos
+
+function page(pageName) {
+    //This function returns the path of a page from the "pages" folder. 
+    //When the "pageName" parameter is null, it returns "pages" folder path only
+
+    const parentDirName = __dirname.substring(0, __dirname.length - '/src'.length) //Remove "/src" 
+    var path = parentDirName + '/pages/'
+    if (pageName) {
+        path += pageName
+    }
+    return path
+}
 
 //Function responsible for filtering users' nicks. If the nick is null or invalid, it returns a random string
 function validNick(nick) {
@@ -92,33 +103,20 @@ function update() {
     io.emit('update', gameState.publicState())
 }
 
+function spawnFruitAndUpdate() {
+    spawnFruit()
+    update()
+}
+
 //Fruit spawn function
 function spawnFruit() {
   if (gameState.fruits.length < MAX_FRUITS && gameState.fruits.length < Math.max(MIN_FRUITS, gameState.players.length)) {
         gameState.spawnFruit()
-        console.log('Spawned a fruit!')
     }
-}
-
-function spawnFruitAndUpdate() {
-    spawnFruit()
-    update()
 }
 
 function spawnFruitRandomPercentage(percent) {
     if (Math.random() < percent) {
         spawnFruit()
     }
-}
-
-function page(pageName) {
-    //This function returns the path of a page from the "pages" folder. 
-    //When the "pageName" parameter is null, it returns "pages" folder path only
-
-    const parentDirName = __dirname.substring(0, __dirname.length - '/src'.length) //Remove "/src" 
-    var path = parentDirName + '/pages/'
-    if (pageName) {
-        path += pageName
-    }
-    return path
 }
