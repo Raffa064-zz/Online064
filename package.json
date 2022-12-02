@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "Online064",
   "version": "1.0.0",
-  "description": "",
+  "description": "A online mine game",
   "main": "src/server.js",
   "scripts": {
     "test": "node ."
