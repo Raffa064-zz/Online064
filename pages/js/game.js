@@ -95,6 +95,7 @@ function render() {
     fruitBlinkState++
 }
 
+//Sent the player movement for the server
 function move(direction) {
     socket.emit('move', direction)
 }
