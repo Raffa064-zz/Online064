@@ -53,17 +53,17 @@ io.on('connection', socket => {
         gameState.updateBestPlayer(player)
 
         //Send updates for all players
-        update()
+        update(player)
     })
 
     //Player disconnect event 
     socket.on('disconnect', () => {
         console.log('Player disconnected: '+player.nick)
         gameState.removePlayer(player)
-        update()
+        update(player)
     })
 
-    update()
+    update(player)
 })
 
 setInterval(spawnFruitAndUpdate, SPAWN_DELAY) //spawnar uma fruta a cada tantos segundos
@@ -99,16 +99,18 @@ function validNick(nick) {
 }
 
 //Sent the current gameState for all player
-function update() {
-    io.emit('update', gameState.publicState())
+function update(player) {
+    io.emit('update', {
+        updateTrigger: player, //the player that has triggered the update
+        gameState: gameState.publicState()
+    })
 }
 
 function spawnFruitAndUpdate() {
     spawnFruit()
-    update()
+    update(null)
 }
 
-//Fruit spawn function
 function spawnFruit() {
   if (gameState.fruits.length < MAX_FRUITS && gameState.fruits.length < Math.max(MIN_FRUITS, gameState.players.length)) {
         gameState.spawnFruit()
