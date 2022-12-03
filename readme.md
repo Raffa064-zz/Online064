@@ -23,9 +23,17 @@ $ npm run test
 If you want to run with your custom params, you will need to export the exvironment variables manually, example:
 
 ```bash
-$ export PORT=8080
-$ export MIN_FRUITS=5
+$ export PORT=5000
+$ export MIN_FRUITS=10
 $ export MAX_FRUITS=20
 $ export SPAWN_DELAY=1000
 $ node .
 ```
+
+After you runned the server, you can test on your browser, with a localhost url, like this:
+
+```
+http://localhost:5000
+```
+
+NOTE: You will need to put your server port after "localhost:". The default port is 5000.

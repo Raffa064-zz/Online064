@@ -66,7 +66,9 @@ function updatePlayerData(updateTrigger) {
 function render() {
     const cellWidth = width / gameState.width
     const cellHeight = height / gameState.height
+    
     ctx.clearRect(0, 0, width, height)
+    
     for (const index in gameState.players) {
         const player = gameState.players[index]
         const color = player.color || '#ff0'

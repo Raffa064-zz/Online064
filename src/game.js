@@ -19,7 +19,7 @@ function createGameState(width, height) {
         spawnPlayer: function(socketId, nick) {
             const player = {
                 id: socketId,
-                nick: 'Undefined064',
+                nick: nick,
                 color: 'hsl(' + parseInt(Math.random() * 360) + ', 82%, 34%, 1)',
                 score: 0,
                 x: Math.floor(Math.random() * this.width),
