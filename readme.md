@@ -1,7 +1,7 @@
 # Online064
 ![cover image](assets/readme-cover.jpg)
 
-A simple online mini game.
+A simple online mini game, maded with express and socket.io.
 
 # About
 I have maded this project for learn how to use socket.io, and I have realy liked to work on this.
