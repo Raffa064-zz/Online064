@@ -13,6 +13,20 @@ body {
     color: #aaa;
 }
 
+.blue-blink {
+    animation: blue-blink 2s forwards;
+}
+
+@keyframes blue-blink {
+    0%, 10%, 30%, 70% {
+        color: #08f;
+    }
+    
+    5%, 25%, 64%, 100% {
+        color: #aaa;
+    }
+}
+
 input {
     padding: 10px;
     margin-block: 10px;
