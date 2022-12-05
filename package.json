@@ -4,7 +4,7 @@
   "description": "A online mine game",
   "main": "src/server.js",
   "scripts": {
-    "test": "node ."
+    "start": "node src/server.js"
   },
   "keywords": [],
   "author": "",
