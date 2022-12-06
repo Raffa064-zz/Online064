@@ -22,14 +22,14 @@ body {
         color: #08f;
     }
     
-    5%, 25%, 64%, 100% {
+    15%, 35%, 100% {
         color: #aaa;
     }
 }
 
 input {
     padding: 10px;
-    margin-block: 10px;
+    margin-bottom: 10px;
     background: transparent;
     color: #aaa;
     border: 1px solid #777;
@@ -40,6 +40,11 @@ input {
 input:focus {
     border: 1px solid #aaa;
     outline: none;
+}
+
+.error, .error:focus {
+    color: #FF6666;
+    border-color: #FF6666;
 }
 
 button {
